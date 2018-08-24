@@ -1,5 +1,5 @@
-# jsbox_pc_debuger
-JSBox的PC端调试工具，基于Chrome Node.js DevTools。
+# jsbox_pc_logger
+JSBox的PC端日志打印工具，基于Node Debugging Inspector。
 
 ### 要求
 - Node.js
@@ -30,7 +30,7 @@ JSBox的PC端调试工具，基于Chrome Node.js DevTools。
 
 #### Google Chrome DevTools
 
-2. 打开Chrome浏览器，输入``chrome://inspect/#devices``，点击界面的``Open dedicated DevTools for Node``打开调试工具
+1. 打开Chrome浏览器，输入``chrome://inspect/#devices``，点击界面的``Open dedicated DevTools for Node``打开调试工具
 
 #### Visual Studio Code
 
