@@ -11,9 +11,9 @@ JSBox的PC端调试工具，基于Chrome Node.js DevTools。
 1. 下载或Clone本仓库并进入目录
 2. 运行``npm install``安装依赖
 3. 运行如下启动本地Websocket服务，端口默认**44555**
-  ```shell
-  node --inspect .\index.js
-  ```
+    ```shell
+    node --inspect .\index.js
+    ```
 
 ### JSBox加载
 
@@ -36,20 +36,20 @@ JSBox的PC端调试工具，基于Chrome Node.js DevTools。
 
 1. 在项目中新建文件``.vscode/launch.json``
 2. 文件加入如下内容：
-  ```json
-  {
-      "version": "0.2.0",
-      "configurations": [
-          {
-              "type": "node",
-              "request": "launch",
-              "name": "JSBoxLogger",
-              "address": "localhost",
-              "port": 9229
-          }
-      ]
-  }
-  ```
+    ```json
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "JSBoxLogger",
+                "address": "localhost",
+                "port": 9229
+            }
+        ]
+    }
+    ```
 3. 菜单选择调试-启动调试
 
 ### 方法
