@@ -12,7 +12,7 @@ JSBox的PC端日志打印工具，基于Node Debugging Inspector。
 2. 运行``npm install``安装依赖
 3. 运行如下启动本地Websocket服务，端口默认**44555**
     ```shell
-    node --inspect .\index.js
+    npm start
     ```
 
 ### JSBox加载

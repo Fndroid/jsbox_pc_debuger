@@ -3,7 +3,7 @@ const wss = new WebSocket.Server({ port: 44555 })
 
 wss.on('connection', (ws, req) => {
     ws.on('message', message => {
-        var data = JSON.parse(message);
+        var data = deserialize(message);
         let type = data.type;
         let args = data.args;
         if (type === 'log') {
@@ -19,3 +19,7 @@ wss.on('connection', (ws, req) => {
         }
     });
 })
+
+function deserialize(serializedJavascript) {
+    return eval('(' + serializedJavascript + ')');
+}
