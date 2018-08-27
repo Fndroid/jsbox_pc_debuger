@@ -23,7 +23,8 @@ JSBox的PC端日志打印工具，基于Node Debugging Inspector。
 - 使用模块
   在脚本代码入口加入：
   ```javascript
-  require('socketLogger').init('192.168.50.xxx', '44555', true, true);
+  const socketLogger = require('socketLogger')
+  'init' in socketLogger && socketLogger.init('192.168.50.229')
   ```
 
 ### 调试环境
