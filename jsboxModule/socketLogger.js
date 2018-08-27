@@ -110,42 +110,46 @@ function fullSerialize(obj, options) {
 }
 
 module.exports = {
-    init: (address, port, clearFirst = true, debug = true) => {
-        var oldLog = console.log;
-        var oldInfo = console.info;
-        var oldWarn = console.warn;
-        var oldError = console.error;
-        let start = clearFirst
-        var socket = $socket.new(`ws://${address}:${port}`);
-        socket.open()
-
-        console.log = function (obj) {
-            if (debug) {
-                let msg = fullSerialize({ type: 'log', args: Array.prototype.slice.call(arguments) })
-                start = sendMessage(start, socket, msg);
+    init: (address, port=44555, clearFirst = true, debug = true) => {
+        try {
+            var oldLog = console.log;
+            var oldInfo = console.info;
+            var oldWarn = console.warn;
+            var oldError = console.error;
+            let start = clearFirst
+            var socket = $socket.new(`ws://${address}:${port}`);
+            socket.open()
+    
+            console.log = function (obj) {
+                if (debug) {
+                    let msg = fullSerialize({ type: 'log', args: Array.prototype.slice.call(arguments) })
+                    start = sendMessage(start, socket, msg);
+                }
+                oldLog.apply(console, arguments);
             }
-            oldLog.apply(console, arguments);
-        }
-        console.info = function (obj) {
-            if (debug) {
-                let msg = fullSerialize({ type: 'info', args: Array.prototype.slice.call(arguments) });
-                start = sendMessage(start, socket, msg);
+            console.info = function (obj) {
+                if (debug) {
+                    let msg = fullSerialize({ type: 'info', args: Array.prototype.slice.call(arguments) });
+                    start = sendMessage(start, socket, msg);
+                }
+                oldInfo.apply(console, arguments);
             }
-            oldInfo.apply(console, arguments);
-        }
-        console.warn = function (obj) {
-            if (debug) {
-                let msg = fullSerialize({ type: 'warn', args: Array.prototype.slice.call(arguments) });
-                start = sendMessage(start, socket, msg);
+            console.warn = function (obj) {
+                if (debug) {
+                    let msg = fullSerialize({ type: 'warn', args: Array.prototype.slice.call(arguments) });
+                    start = sendMessage(start, socket, msg);
+                }
+                oldWarn.apply(console, arguments);
             }
-            oldWarn.apply(console, arguments);
-        }
-        console.error = function (obj) {
-            if (debug) {
-                let msg = fullSerialize({ type: 'error', args: Array.prototype.slice.call(arguments) });
-                start = sendMessage(start, socket, msg);
+            console.error = function (obj) {
+                if (debug) {
+                    let msg = fullSerialize({ type: 'error', args: Array.prototype.slice.call(arguments) });
+                    start = sendMessage(start, socket, msg);
+                }
+                oldError.apply(console, arguments);
             }
-            oldError.apply(console, arguments);
+        } catch(e) {
+            console.error('JSBox版本暂不支持远程调试！')
         }
     }
 }
