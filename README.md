@@ -15,7 +15,7 @@ npm install -g jsbox-logger
 ### JSBox加载
 
 - 引入模块
-  将目录``jsboxMoudle``下的``socketLogger.js``导入JSBox的``脚本模块``下（方便下次使用）
+  将仓库目录``jsboxMoudle``下的[socketLogger.js](https://github.com/Fndroid/jsbox_pc_debuger/tree/master/jsboxModule)导入JSBox的``脚本模块``下（方便下次使用）
 
 - 使用模块
   在脚本代码入口加入：
