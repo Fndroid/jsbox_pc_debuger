@@ -8,12 +8,9 @@ JSBox的PC端日志打印工具，基于Node Debugging Inspector。
 
 ### 安装及运行
 
-1. 下载或Clone本仓库并进入目录
-2. 运行``npm install``安装依赖
-3. 运行如下启动本地Websocket服务，端口默认**44555**
-    ```shell
-    npm start
-    ```
+```
+npm install -g jsbox-logger
+```
 
 ### JSBox加载
 
