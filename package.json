@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "bin": "./bin/jsbox-logger.sh",
+  "bin": "./bin/jsbox-logger",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --inspect index.js"
   },
   "author": "Fndroid",
   "license": "MIT",
   "dependencies": {
+    "node-cmd": "^3.0.0",
     "ws": "^6.0.0"
   }
 }
