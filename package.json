@@ -12,5 +12,14 @@
   "dependencies": {
     "node-cmd": "^3.0.0",
     "ws": "^6.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fndroid/jsbox_pc_debuger.git"
+  },
+  "keywords": [
+    "jsbox",
+    "jsbox-logger",
+    "jsbox-debugger"
+  ]
 }
