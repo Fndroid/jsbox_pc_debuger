@@ -1,3 +1,12 @@
 #!/usr/bin/env node
 
-require('node-cmd').run('node --inspect ./index.js')
+const cmd = require('node-cmd')
+const internalIp = require('internal-ip')
+const chalk = require('chalk')
+
+let process = cmd.get(`node --inspect ${__dirname}/../index.js`)
+console.log(chalk.greenBright(`[Info] 调试代理服务器IP地址为：${internalIp.v4.sync()}`))
+
+process.addListener("close", () => {
+    console.log(chalk.redBright('[Error] 测试服务器启动失败，请检查端口（44555）是否被占用！'))
+})

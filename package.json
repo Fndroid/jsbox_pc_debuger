@@ -1,6 +1,6 @@
 {
   "name": "jsbox-logger",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "bin": "./bin/jsbox-logger",
@@ -10,6 +10,8 @@
   "author": "Fndroid",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.4.1",
+    "internal-ip": "^3.0.1",
     "node-cmd": "^3.0.0",
     "ws": "^6.0.0"
   },
