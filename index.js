@@ -14,7 +14,7 @@ wss.on('connection', (ws, req) => {
             console.warn(...args);
         } else if (type === 'error') {
             console.error(...args)
-        } else if (type === '_open') {
+        } else if (type === 'clear') {
             console.clear()
         }
     });

@@ -9,8 +9,13 @@ JSBox的PC端日志打印工具，基于Node Debugging Inspector。
 ### 安装及运行
 
 ```
-npm install -g jsbox-logger
+npm install -g jsbox-logger // install globaly
 ```
+
+```
+jsbox-logger // start debugging
+```
+
 
 ### JSBox加载
 
@@ -52,9 +57,8 @@ npm install -g jsbox-logger
 
 ### 方法
 
-#### socketLogger.init(host, port, clearFirst, debug)
+#### socketLogger.init(host, port, debug)
 
 - host: 局域网服务端地址
 - port: 局域网服务端端口
-- clearFirst: 每次启动脚本先清空就记录
 - debug: 是否推送日志
