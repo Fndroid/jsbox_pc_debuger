@@ -61,4 +61,4 @@ jsbox-logger // start debugging
 
 - host: 局域网服务端地址
 - port: 局域网服务端端口
-- debug: 是否推送日志
+- debug: 是否推送日志（打包推送更新时务必设置为false）
