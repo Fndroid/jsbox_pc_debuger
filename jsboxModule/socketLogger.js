@@ -137,13 +137,15 @@ module.exports = {
             
             socket.listen({
                 didOpen: sock => {
-                    if (msgQueue.length > 0) {
-                        $delay(5, () => {
-                            timer.invalidate()
-                        })
-                    } else {
-                        timer.invalidate()
-                    }
+                    let checker = $timer.schedule({
+                        interval: 1,
+                        handler: () => {
+                            if (msgQueue.length === 0) {
+                                timer.invalidate()
+                                checker.invalidate()
+                            }
+                        }
+                    })
                 }
             })
 
@@ -191,7 +193,7 @@ module.exports = {
 }
 
 function sendMessage(socket, msg) {
-    if (socket.readyState === 1) {
+    if (socket.readyState === 1 && msgQueue.length === 0) {
         socket.send(msg);
     } else {
         msgQueue.push(msg)
