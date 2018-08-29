@@ -27,6 +27,13 @@ jsbox-logger // start debugging
   ```javascript
   const socketLogger = require('socketLogger')
   'init' in socketLogger && socketLogger.init('192.168.xxx.xxx') // PC端IP地址，不能使用localhost
+
+  $app.listen({
+    exit: () => {
+      'destroy' in socketLogger && socketLogger.destroy() // 退出脚本时还原环境
+    }
+  })
+
   ```
 
 ### 调试环境

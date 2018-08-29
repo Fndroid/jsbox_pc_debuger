@@ -14,6 +14,8 @@ var ESCAPED_CHARS = {
     '\u2029': '\\u2029'
 };
 
+var socket, oldClear, oldError, oldInfo, oldLog, oldWarn;
+
 function escapeUnsafeChars(unsafeChar) {
     return ESCAPED_CHARS[unsafeChar];
 }
@@ -111,7 +113,7 @@ function fullSerialize(obj, options) {
 
 let msgQueue = []
 
-let startTimeer = function(socket) {
+let startTimeer = function (socket) {
     return $timer.schedule({
         interval: 0.5,
         handler: () => {
@@ -123,72 +125,82 @@ let startTimeer = function(socket) {
     })
 }
 
-module.exports = {
-    init: (address, port=44555, debug = true) => {
-        try {
-            var oldLog = console.log;
-            var oldInfo = console.info;
-            var oldWarn = console.warn;
-            var oldError = console.error;
-            var oldClear = console.clear;
-            var socket = $socket.new(`ws://${address}:${port}`);
+module.exports.init = function (address, port = 44555, debug = true) {
+    try {
+        oldLog = console.log;
+        oldInfo = console.info;
+        oldWarn = console.warn;
+        oldError = console.error;
+        oldClear = console.clear;
 
-            let timer = startTimeer(socket)
-            
-            socket.listen({
-                didOpen: sock => {
-                    let checker = $timer.schedule({
-                        interval: 1,
-                        handler: () => {
-                            if (msgQueue.length === 0) {
-                                timer.invalidate()
-                                checker.invalidate()
-                            }
+        socket = $socket.new(`ws://${address}:${port}`);
+
+        let timer = startTimeer(socket)
+
+        socket.listen({
+            didOpen: sock => {
+                let checker = $timer.schedule({
+                    interval: 1,
+                    handler: () => {
+                        if (msgQueue.length === 0) {
+                            timer.invalidate()
+                            checker.invalidate()
                         }
-                    })
-                }
-            })
+                    }
+                })
+            }
+        })
 
-            socket.open()
-    
-            console.log = function () {
-                if (debug) {
-                    let msg = fullSerialize({ type: 'log', args: Array.prototype.slice.call(arguments) })
-                    sendMessage(socket, msg);
-                }
-                oldLog.apply(console, arguments);
+        socket.open()
+
+        console.log = function () {
+            if (debug) {
+                let msg = fullSerialize({ type: 'log', args: Array.prototype.slice.call(arguments) })
+                sendMessage(socket, msg);
             }
-            console.info = function () {
-                if (debug) {
-                    let msg = fullSerialize({ type: 'info', args: Array.prototype.slice.call(arguments) });
-                    sendMessage(socket, msg);
-                }
-                oldInfo.apply(console, arguments);
-            }
-            console.warn = function () {
-                if (debug) {
-                    let msg = fullSerialize({ type: 'warn', args: Array.prototype.slice.call(arguments) });
-                    sendMessage(socket, msg);
-                }
-                oldWarn.apply(console, arguments);
-            }
-            console.error = function () {
-                if (debug) {
-                    let msg = fullSerialize({ type: 'error', args: Array.prototype.slice.call(arguments) });
-                    sendMessage(socket, msg);
-                }
-                oldError.apply(console, arguments);
-            }
-            console.clear = function() {
-                if (debug) {
-                    let msg = fullSerialize({ type: 'clear', args: [] });
-                    sendMessage(socket, msg)
-                }
-                oldClear.apply(console, arguments)
-            }
-        } catch(e) {
-            console.error('JSBox版本暂不支持远程调试！')
+            oldLog.apply(console, arguments);
         }
+        console.info = function () {
+            if (debug) {
+                let msg = fullSerialize({ type: 'info', args: Array.prototype.slice.call(arguments) });
+                sendMessage(socket, msg);
+            }
+            oldInfo.apply(console, arguments);
+        }
+        console.warn = function () {
+            if (debug) {
+                let msg = fullSerialize({ type: 'warn', args: Array.prototype.slice.call(arguments) });
+                sendMessage(socket, msg);
+            }
+            oldWarn.apply(console, arguments);
+        }
+        console.error = function () {
+            if (debug) {
+                let msg = fullSerialize({ type: 'error', args: Array.prototype.slice.call(arguments) });
+                sendMessage(socket, msg);
+            }
+            oldError.apply(console, arguments);
+        }
+        console.clear = function () {
+            if (debug) {
+                let msg = fullSerialize({ type: 'clear', args: [] });
+                sendMessage(socket, msg)
+            }
+            oldClear.apply(console, arguments)
+        }
+    } catch (e) {
+        console.error('JSBox版本暂不支持远程调试！')
+    }
+}
+
+module.exports.destroy = function () {
+    if (oldLog) console.log = oldLog
+    if (oldInfo) console.info = oldInfo
+    if (oldClear) console.clear = oldClear
+    if (oldError) console.error = oldError
+    if (oldWarn) console.warn = oldWarn
+    if (socket) {
+        socket.close()
     }
 }
 
