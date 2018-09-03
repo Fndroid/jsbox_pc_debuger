@@ -3,10 +3,19 @@
 const cmd = require('node-cmd')
 const internalIp = require('internal-ip')
 const chalk = require('chalk')
+const rpn = require('request-promise-native')
 
 let process = cmd.get(`node --inspect ${__dirname}/../index.js`)
-console.log(chalk.greenBright(`[Info] 调试代理服务器IP地址为：${internalIp.v4.sync()}`))
+console.log(chalk.greenBright(`[INFO] SocketLogger server is running on ${internalIp.v4.sync()}:44555`))
+rpn({
+    url: 'http://127.0.0.1:9229/json/list',
+    json: true
+}).then(resp => {
+    if (typeof resp[0].devtoolsFrontendUrl === 'string') {
+        console.log(chalk.greenBright(`[INFO] Chrome Dev Page URL: ${resp[0].devtoolsFrontendUrl}`))
+    }
+})
 
 process.addListener("close", () => {
-    console.log(chalk.redBright('[Error] 测试服务器启动失败，请检查端口（44555）是否被占用！'))
+    console.log(chalk.redBright('[ERROR] SocketLogger stopped, check if port 44555 was taken!'))
 })

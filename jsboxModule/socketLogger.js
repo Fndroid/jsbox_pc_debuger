@@ -155,28 +155,28 @@ module.exports.init = function (address, port = 44555, debug = true) {
 
         console.log = function () {
             if (debug) {
-                let msg = fullSerialize({ type: 'log', args: Array.prototype.slice.call(arguments) })
+                let msg = fullSerialize({ type: 'log', args: preHandleNativeObjects(arguments) })
                 sendMessage(socket, msg);
             }
             oldLog.apply(console, arguments);
         }
         console.info = function () {
             if (debug) {
-                let msg = fullSerialize({ type: 'info', args: Array.prototype.slice.call(arguments) });
+                let msg = fullSerialize({ type: 'info', args: preHandleNativeObjects(arguments) });
                 sendMessage(socket, msg);
             }
             oldInfo.apply(console, arguments);
         }
         console.warn = function () {
             if (debug) {
-                let msg = fullSerialize({ type: 'warn', args: Array.prototype.slice.call(arguments) });
+                let msg = fullSerialize({ type: 'warn', args: preHandleNativeObjects(arguments) });
                 sendMessage(socket, msg);
             }
             oldWarn.apply(console, arguments);
         }
         console.error = function () {
             if (debug) {
-                let msg = fullSerialize({ type: 'error', args: Array.prototype.slice.call(arguments) });
+                let msg = fullSerialize({ type: 'error', args: preHandleNativeObjects(arguments) });
                 sendMessage(socket, msg);
             }
             oldError.apply(console, arguments);
@@ -191,6 +191,15 @@ module.exports.init = function (address, port = 44555, debug = true) {
     } catch (e) {
         console.error('JSBox版本暂不支持远程调试！')
     }
+}
+
+function preHandleNativeObjects(arguments) {
+    return Array.prototype.slice.call(arguments).map(i => {
+        if (/\[object NS.*?\]/.test(i.toString())) {
+            return i.runtimeValue().invoke('description').rawValue().toString()
+        }
+        return i
+    })
 }
 
 module.exports.destroy = function () {
